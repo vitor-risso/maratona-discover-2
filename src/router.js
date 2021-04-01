@@ -68,7 +68,7 @@ const Job = {
           ...job,
           reamining,
           status,
-          budget: Profile.data["value-hour"] * job["total-hours"]
+          budget: Job.services.calculateBudget(job, Profile.data["value-hour"])
         }
       })
       return res.render(basePath + "index", { jobs: updatedJob })
@@ -95,9 +95,43 @@ const Job = {
     show(req, res) {
       const id = req.params.id
 
+      const job = Job.data.find(job => Number(job.id) == Number(id))
+
+      if (!job) {
+        return res.status(404).send("Job not found")
+      }
+
+      job.budget = Job.services.calculateBudget(job, Profile.data["value-hour"])
 
       return res.render(basePath + "job-edit", { job })
     },
+
+    update(req,res){
+      const id = req.params.id
+
+      const job = Job.data.find(job => job.id == id)
+
+      if (!job) {
+        return res.status(404).send("Job not found")
+      }
+
+      const updatedJob = {
+        ...job,
+        name: req.body.name,
+        "total-hours": req.body["total-hours"],
+        "daily-hours": req.body["daily-hours"]
+      }
+
+      Job.data = Job.data.map(job => {
+        if(job.id == id){
+          job = updatedJob
+        }
+        
+        return job
+      })
+
+      res.redirect('/job/' + id)
+    }
 
   },
 
@@ -116,6 +150,8 @@ const Job = {
 
       return dayDiff
     },
+
+    calculateBudget: (job, valueHour) => valueHour * job["total-hours"]
   }
 }
 
@@ -125,6 +161,7 @@ routes.get('/job', Job.controllers.create)
 routes.post('/job', Job.controllers.save)
 
 routes.get('/job/:id', Job.controllers.show)
+routes.post('/job/:id', Job.controllers.update)
 
 routes.get('/profile', Profile.controllers.index)
 routes.post('/profile', Profile.controllers.update)
