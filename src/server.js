@@ -1,9 +1,11 @@
 const express = require("express");
 const routes = require('./router')
+const path = require('path')
 
 const server = express()
 
 server.set("view engine", "ejs")
+server.set("views", path.join(__dirname, "views"))
 
 //allow us to use req.body
 server.use(express.urlencoded({ extended: true }))

@@ -1,7 +1,7 @@
 const express = require("express")
 const routes = express.Router()
+const profileController = require('./controllers/profileController')
 
-const basePath = __dirname + "/views/"
 
 const Profile = {
   data: {
@@ -12,30 +12,6 @@ const Profile = {
     "hours-per-day": 8,
     "monthly-budget": 3000,
     "value-hour": 75
-  },
-
-  controllers: {
-    index(req, res) {
-      return res.render(basePath + "profile", { profile: Profile.data })
-    },
-
-    update(req, res) {
-      const data = req.body
-      const weekPerYear = 52
-      const weekPerMonth = (weekPerYear - data["vacation-per-year"]) / 12
-      const weekTotalHours = data["hours-per-day"] * data["days-per-week"]
-      const monthlyTotalHours = weekTotalHours * weekPerMonth
-
-      const valueHour = data["monthly-budget"] / monthlyTotalHours
-
-      Profile.data = {
-        ...Profile.data,
-        ...req.body,
-        "value-hour": valueHour
-      }
-
-      return res.redirect('/profile')
-    },
   }
 }
 
@@ -71,11 +47,11 @@ const Job = {
           budget: Job.services.calculateBudget(job, Profile.data["value-hour"])
         }
       })
-      return res.render(basePath + "index", { jobs: updatedJob })
+      return res.render("index", { jobs: updatedJob })
     },
 
     create(req, res) {
-      return res.render(basePath + "job")
+      return res.render("job")
     },
 
     save(req, res) {
@@ -103,10 +79,10 @@ const Job = {
 
       job.budget = Job.services.calculateBudget(job, Profile.data["value-hour"])
 
-      return res.render(basePath + "job-edit", { job })
+      return res.render("job-edit", { job })
     },
 
-    update(req,res){
+    update(req, res) {
       const id = req.params.id
 
       const job = Job.data.find(job => job.id == id)
@@ -123,10 +99,10 @@ const Job = {
       }
 
       Job.data = Job.data.map(job => {
-        if(job.id == id){
+        if (job.id == id) {
           job = updatedJob
         }
-        
+
         return job
       })
 
@@ -163,7 +139,7 @@ routes.post('/job', Job.controllers.save)
 routes.get('/job/:id', Job.controllers.show)
 routes.post('/job/:id', Job.controllers.update)
 
-routes.get('/profile', Profile.controllers.index)
-routes.post('/profile', Profile.controllers.update)
+routes.get('/profile', profileController.index)
+routes.post('/profile', profileController.update)
 
 module.exports = routes
