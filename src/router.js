@@ -4,8 +4,9 @@ const routes = express.Router()
 //controllers
 const ProfileController = require('./controllers/profileController')
 const JobConroller = require('./controllers/jobController')
+const DashboardControlller = require('./controllers/dashBoardControlles')
 
-routes.get('/', JobConroller.index)
+routes.get('/', DashboardControlller.index)
 
 routes.get('/job', JobConroller.create)
 routes.post('/job', JobConroller.save)
