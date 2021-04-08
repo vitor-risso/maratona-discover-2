@@ -5,8 +5,7 @@ module.exports = {
     const db = await dataBase()
 
     const data = await db.get(`SELECT * FROM profile`)
-    console.log(data)
-    await db.close()    
+    await db.close()
 
     return {
       name: data.name,
@@ -19,7 +18,18 @@ module.exports = {
     }
   },
 
-  update(newData) {
-    return data = newData
+  async update(newData) {
+    const db = await dataBase()
+    db.run(` UPDATE profile SET 
+      name = "${newData.name}",
+      avata = "${newData.avatar}",
+      monthly_budget = ${newData[monthly-budget]},
+      days_per_week = ${newData[days-per-week]},
+      hours_per_day = ${newData[hours-per-day]}, 
+      vacation_per_year = ${newData[vacation-per-year]} ,
+      value_hour = ${newData[value-hour]}      
+    `)
+    await db.close()
+
   }
 }

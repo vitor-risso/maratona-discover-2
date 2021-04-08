@@ -14,7 +14,7 @@ module.exports = {
 
     const valueHour = data["monthly-budget"] / monthlyTotalHours
 
-    Profile.update({
+    await Profile.update({
       ...profile,
       ...req.body,
       "value-hour": valueHour

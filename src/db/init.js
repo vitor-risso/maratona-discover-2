@@ -29,14 +29,16 @@ const start = {
       monthly_budget,
       days_per_week,
       hours_per_day,
-      vacation_per_year
+      vacation_per_year,
+      value_hour
     ) VALUES (
       "Vitor Hugo",
       "https://github.com/vitor-risso.png",
       3000,
       8,
       5,
-      1
+      1,
+      75
     );`)
 
     await db.run(`INSERT INTO jobs (
