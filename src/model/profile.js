@@ -1,16 +1,22 @@
-let data = {
-  name: "Vitor Hugo",
-  avatar: "https://github.com/vitor-risso.png",
-  "vacation-per-year": 1,
-  "days-per-week": 5,
-  "hours-per-day": 8,
-  "monthly-budget": 3000,
-  "value-hour": 75
-}
+const dataBase = require('../db/config')
 
 module.exports = {
-  get() {
-    return data
+  async get() {
+    const db = await dataBase()
+
+    const data = await db.get(`SELECT * FROM profile`)
+    console.log(data)
+    await db.close()    
+
+    return {
+      name: data.name,
+      avatar: data.avatar,
+      "monthly-budget": data.monthly_budget,
+      "vacation-per-year": data.vacation_per_year,
+      "value-hour": data.value_hour,
+      "days-per-week": data.days_per_week,
+      "hours-per-day": data.hours_per_day
+    }
   },
 
   update(newData) {
