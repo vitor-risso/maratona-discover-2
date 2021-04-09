@@ -1,7 +1,6 @@
 module.exports =  {
   remainingDays(job) {
     const remainingDays = (job["total-hours"] / job["daily-hours"]).toFixed()
-
     const date = new Date(job.createdAt)
     const deadLineDay = date.getDate() + Number(remainingDays)
     const deadLineDate = date.setDate(deadLineDay)

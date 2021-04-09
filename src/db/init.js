@@ -18,7 +18,7 @@ const start = {
     await db.exec(`CREATE TABLE jobs (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT,
-      dayli_hours INT,
+      daily_hours INT,
       total_hours INT,
       created_at DATETIME
     )`)
@@ -43,7 +43,7 @@ const start = {
 
     await db.run(`INSERT INTO jobs (
       name,
-      dayli_hours,
+      daily_hours,
       total_hours,
       created_at
     ) VALUES (
@@ -55,7 +55,7 @@ const start = {
 
     await db.run(`INSERT INTO jobs (
       name,
-      dayli_hours,
+      daily_hours,
       total_hours,
       created_at
     ) VALUES (
