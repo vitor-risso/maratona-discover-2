@@ -35,28 +35,14 @@ module.exports = {
 
   async update(req, res) {
     const id = req.params.id
-    const jobs = await Job.get()
-    const job = jobs.find(job => job.id == id)
-
-    if (!job) {
-      return res.status(404).send("Job not found")
-    }
-
+   
     const updatedJob = {
-      ...job,
       name: req.body.name,
       "total-hours": req.body["total-hours"],
       "daily-hours": req.body["daily-hours"]
     }
 
-    const newJob = jobs.forEach(job => {
-      if (job.id == id) {
-        job = updatedJob
-      }
-      return job
-    })
-    console.log(jobs)
-    await Job.update(newJob)
+    await Job.update(updatedJob, id)
 
     res.redirect('/job/' + id)
   },
