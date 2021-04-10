@@ -41,6 +41,20 @@ O JobsCalc é uma aplicação de estimativa de cálculo para projetos freelancer
 
 Você pode visualizar o layout do projeto através [desse link](https://www.figma.com/file/s4fytPFbDiSkv4GPSfKaLE/Jobs-Planning). É necessário ter conta no [Figma](https://figma.com) para acessá-lo.
 
+[ x ]TryCatch no Profile controller
+  [ x ] Metodo Index
+  [ x ] Metodo Update
+
+[ ] TryCatch no Job controller
+  [ ] Metodo create
+  [ ] Metodo save
+  [ ] Metodo show
+  [ ] Metodo update
+  [ ] Metodo Delete
+
+[ ] Criar mais utils
+
+### Adicionar send e satus para as responses, porém necessitaria de um front end para recebelas
 ## :memo: Licença
 
 Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](.github/LICENSE.md) para mais detalhes.
