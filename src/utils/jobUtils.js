@@ -8,7 +8,7 @@ module.exports =  {
     const timeDiff = deadLineDate - Date.now()
 
     const dayInMs = 1000 * 60 * 60 * 24
-    const dayDiff = (timeDiff / dayInMs).toFixed()
+    const dayDiff = Math.ceil(timeDiff / dayInMs)
 
     return dayDiff
   },
