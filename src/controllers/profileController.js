@@ -1,7 +1,11 @@
 const Profile = require('../model/profile')
 module.exports = {
   async index(req, res) {
-    return res.render("profile", { profile: await Profile.get() })
+    try {
+      return res.render("profile", { profile: await Profile.get() }).status(200)
+    } catch (error) {
+      return res.status(500).send({message: "Erro ao buscar dados do backend"})
+    }
   },
 
   async update(req, res) {
