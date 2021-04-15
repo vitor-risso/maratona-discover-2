@@ -1,10 +1,12 @@
 const Profile = require('../model/profile')
+const profileUtils = require('../utils/profileUtils')
 module.exports = {
   async index(req, res) {
     try {
-      return res.render("profile", { profile: await Profile.get() }).status(200)
+      const profile = await Profile.get()
+      return res.status(200).render("profile", { profile: profile }).status(200)
     } catch (error) {
-      return res.status(500).send({message: "Erro ao buscar dados do backend"})
+      return res.status(500).send({ message: "Erro ao buscar dados do backend" })
     }
   },
 
@@ -12,15 +14,19 @@ module.exports = {
     const profile = await Profile.get()
 
     const data = req.body
-    const weekPerYear = 52
-    const weekPerMonth = (weekPerYear - data["vacation-per-year"]) / 12
-    const weekTotalHours = data["hours-per-day"] * data["days-per-week"]
-    const monthlyTotalHours = weekTotalHours * weekPerMonth
 
-    const valueHour = data["monthly-budget"] / monthlyTotalHours
+    if (!data) {
+      return res.status(400).redirect('/')
+    }
 
-    if (req.body["vacation-per-year"] > 52) {
-      return res.status(400).send({meesage: "Período de férias deve ser menor que 52 semanas"}).redirect('/profile')
+    const valueHour = profileUtils.valueHour(data)
+
+    if (profileUtils.validateVacations(data["vacation-per-year"])) {
+      return res.status(400).send({ message: "Período de férias deve ser menor que 52 semanas" }).redirect('/profile')
+    }
+
+    if (profileUtils.validateDaysPerWeek(data["days-per-week"])) {
+      return res.status(400).send({ message: "Os dias trabalhados durante a semana devem ser menores ou igual a 7" }).redirect('/profile')
     }
 
     try {
@@ -34,5 +40,5 @@ module.exports = {
     }
 
     return res.status(200).redirect('/profile')
-  },
+  }
 }

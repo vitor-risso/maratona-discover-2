@@ -8,21 +8,37 @@ module.exports = {
   },
 
   async save(req, res) {
-    await Job.create({
-      name: req.body.name,
-      "daily-hours": req.body["daily-hours"],
-      "total-hours": req.body["total-hours"],
-      createdAt: Date.now()
-    })
 
-    return res.redirect('/')
+    try {
+
+      await Job.create({
+        name: req.body.name,
+        "daily-hours": req.body["daily-hours"],
+        "total-hours": req.body["total-hours"],
+        createdAt: Date.now()
+      })
+
+    } catch (error) {
+
+      return res.status(500).redirect('/')
+
+    }
+
+    return res.status(201).redirect('/')
   },
 
   async show(req, res) {
-    const id = req.params.id
-    const profile = await Profile.get()
-    const jobs = await Job.get()
-    const job = jobs.find(job => Number(job.id) == Number(id))
+
+    try {
+
+      const id = req.params.id
+      const profile = await Profile.get()
+      const jobs = await Job.get()
+      const job = jobs.find(job => Number(job.id) == Number(id))
+      
+    } catch (error) {
+      return res.status(404).redirect('/')
+    }
 
     if (!job) {
       return res.status(404).send("Job not found")
@@ -30,29 +46,41 @@ module.exports = {
 
     job.budget = JobUtils.calculateBudget(job, profile["value-hour"])
 
-    return res.render("job-edit", { job })
+    return res.status(200).render("job-edit", { job })
   },
 
   async update(req, res) {
-    const id = req.params.id
-   
-    const updatedJob = {
-      name: req.body.name,
-      "total-hours": req.body["total-hours"],
-      "daily-hours": req.body["daily-hours"]
+    try {
+
+      const id = req.params.id
+
+      const updatedJob = {
+        name: req.body.name,
+        "total-hours": req.body["total-hours"],
+        "daily-hours": req.body["daily-hours"]
+      }
+
+      await Job.update(updatedJob, id)
+
+    } catch (error) {
+      return res.status(400).redirect('/job/' + id)
     }
 
-    await Job.update(updatedJob, id)
-
-    res.redirect('/job/' + id)
+    res.status(200).redirect('/job/' + id)
   },
 
   async delete(req, res) {
-    const jobId = req.params.id
 
-    await Job.delete(jobId)
+    try {
+      const jobId = req.params.id
 
-    return res.redirect('/')
+      await Job.delete(jobId)
+
+    } catch (error) {
+      return res.status(400).redirect('/job/' + id)
+    }
+
+    return res.status(200).redirect('/')
   }
 
 }

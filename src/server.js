@@ -14,4 +14,4 @@ server.use(express.static("public"))
 server.use(routes)
 
 
-server.listen(3333, () => console.log("Server is running"))
+server.listen(3333, () => console.log("Server is running on port 3333"))
