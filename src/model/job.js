@@ -19,7 +19,6 @@ module.exports = {
 
   async update(updatedJob, id) {
     const db = await dataBase()
-    console.log(updatedJob)
     await db.run(`UPDATE jobs SET 
       name = "${updatedJob.name}",
       daily_hours = ${updatedJob["daily-hours"]},

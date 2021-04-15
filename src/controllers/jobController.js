@@ -30,23 +30,20 @@ module.exports = {
   async show(req, res) {
 
     try {
-
       const id = req.params.id
       const profile = await Profile.get()
       const jobs = await Job.get()
       const job = jobs.find(job => Number(job.id) == Number(id))
-      
+      if (!job) {
+        return res.status(404).send("Job not found")
+      }
+
+      job.budget = JobUtils.calculateBudget(job, profile["value-hour"])
+
+      return res.status(200).render("job-edit", { job })
     } catch (error) {
       return res.status(404).redirect('/')
     }
-
-    if (!job) {
-      return res.status(404).send("Job not found")
-    }
-
-    job.budget = JobUtils.calculateBudget(job, profile["value-hour"])
-
-    return res.status(200).render("job-edit", { job })
   },
 
   async update(req, res) {
@@ -61,12 +58,12 @@ module.exports = {
       }
 
       await Job.update(updatedJob, id)
+      res.status(200).redirect('/job/' + id)
 
     } catch (error) {
       return res.status(400).redirect('/job/' + id)
     }
 
-    res.status(200).redirect('/job/' + id)
   },
 
   async delete(req, res) {
@@ -75,12 +72,12 @@ module.exports = {
       const jobId = req.params.id
 
       await Job.delete(jobId)
+      return res.status(200).redirect('/')
 
     } catch (error) {
       return res.status(400).redirect('/job/' + id)
     }
 
-    return res.status(200).redirect('/')
   }
 
 }
