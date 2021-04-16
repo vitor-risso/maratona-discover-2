@@ -4,9 +4,9 @@ module.exports = {
   async index(req, res) {
     try {
       const profile = await Profile.get()
-      return res.status(200).render("profile", { profile: profile }).status(200)
+      return res.status(200).render("profile", { profile: profile })
     } catch (error) {
-      return res.status(500).send({ message: "Erro ao buscar dados do backend" })
+      return res.status(500).send({ message: "Erro ao buscar dados do backend", error: error.message })
     }
   },
 
