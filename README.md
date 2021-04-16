@@ -51,7 +51,7 @@ Você pode visualizar o layout do projeto através [desse link](https://www.figm
   - [x] Metodo update
   - [x] Metodo Delete
 
-- [x] Criar mais utils (ProfileUtils with valueHour)
+- [x] Criar mais utils (ProfileUtils with valueHour, validation vacation and days per week)
 
 ### Adicionar send e satus para as responses, porém necessitaria de um front end para recebelas
 ## :memo: Licença
